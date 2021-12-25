@@ -4,7 +4,7 @@ from flask import (
 from flask_login import login_required, login_user, logout_user
 
 from webapp.utilities import user_perms
-from webapp.decorators.decorators import join_required
+from webapp.utilities.decorators import join_required
 from webapp.utilities.login_manager import User
 from webapp.utilities.utilities import verify_form
 from webapp.db.user_queries import check_user_login, create_account, delete_user, get_all_users
@@ -56,7 +56,7 @@ def panel():
             perms = getattr(user_perms.UserPerms, request_type.get('perms'), None)
 
             if verify_form(username, password) and create_account(username, password, perms):
-                flash("Account created")
+                flash({"message": "Account created", "status": "OK"})
             else:
                 flash("Something went wrong")
 

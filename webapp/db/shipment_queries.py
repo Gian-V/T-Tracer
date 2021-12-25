@@ -1,5 +1,5 @@
 from enum import Enum
-from webapp.decorators.decorators import get_db
+from webapp.utilities.decorators import get_db
 import mariadb
 from typing import List, Union, NamedTuple
 

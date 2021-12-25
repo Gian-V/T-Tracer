@@ -1,9 +1,7 @@
 from flask import (
-    Blueprint, request
+    Blueprint
 )
 from flask_login import login_required
-
-from webapp.decorators.decorators import police_required
 
 bp = Blueprint('path', __name__)
 

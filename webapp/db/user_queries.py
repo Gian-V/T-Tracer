@@ -1,5 +1,5 @@
 from enum import Enum
-from webapp.decorators.decorators import get_db
+from webapp.utilities.decorators import get_db
 import mariadb
 from webapp.utilities.user_perms import UserPerms
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -17,7 +17,7 @@ class UserQuery(str, Enum):
     DELETE_USER = "DELETE FROM {} WHERE username = '{}';"
 
 
-def account_existance(cursor: mariadb.connection.cursor, username: str) -> bool:
+def account_existence(cursor: mariadb.connection.cursor, username: str) -> bool:
     cursor.execute(UserQuery.SELECT_ONE_USER_FROM_TRUCKER.format(username))
     db_object = cursor.fetchone()
     if not db_object:
@@ -71,7 +71,7 @@ def get_user_by_username(cursor: mariadb.connection.cursor, username: str) -> Na
 
 @get_db
 def create_account(cursor: mariadb.connection.cursor, username: str, password: str, perms: int) -> bool:
-    if account_existance(cursor, username):
+    if account_existence(cursor, username):
         return False
 
     if perms == UserPerms.USER:

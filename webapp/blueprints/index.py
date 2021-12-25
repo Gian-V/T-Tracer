@@ -3,7 +3,7 @@ from flask import (
 )
 from flask_mail import Message
 from webapp.utilities.utilities import send_document
-from webapp.decorators.decorators import join_required
+from webapp.utilities.decorators import join_required
 from webapp.utilities.variables import mail
 
 bp = Blueprint('main', __name__)

@@ -10,8 +10,8 @@
 
     <div class="container">
         {% for message in get_flashed_messages() %}
-            {% if message.endswith('correctly registered') %}
-                <div class="flash"><p class="alert alert-success" style="text-align: center;">{{ message }}</p></div>
+            {% if message['status'] == 'OK' %}
+                <div class="flash"><p class="alert alert-success" style="text-align: center;">{{ message['message'] }}</p></div>
             {% else %}
                 <div class="flash"><p class="alert alert-danger" style="text-align: center;">{{ message }}</p></div>
             {% endif %}
@@ -22,13 +22,13 @@
         <form method="post">
 
             <label for="track_ID"><b>Track ID</b></label>
-            <input type="text" name="track_ID" autocomplete="off" value="">
+            <input type="text" id="track_ID" name="track_ID" autocomplete="off" value="">
 
             <label for="username"><b>username</b></label>
-            <input class="form-control" type="text" name="username" autocomplete="off">
+            <input class="form-control" id="username" type="text" name="username" autocomplete="off">
 
             <label for="password"><b>Password</b></label>
-            <input type="text" name="password" value="">
+            <input type="text" id="password" name="password" value="">
 
             <label for="perms"><b>Perms</b></label>
             <select name="perms" id="perms">

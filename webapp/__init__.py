@@ -20,10 +20,6 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.secret_key = data["secret_key"]
     app.config['SESSION_TYPE'] = data["session_type"]
-    # app.config.from_mapping(
-    #     SECRET_KEY='dev',
-    #     DATABASE='webapp/databswqsase.db'
-    # )
 
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 465
