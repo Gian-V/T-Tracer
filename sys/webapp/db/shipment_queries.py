@@ -1,6 +1,8 @@
 from enum import Enum
-from webapp.utilities.decorators import get_db
 import mariadb
+
+from webapp.utilities.decorators import get_db
+
 from typing import List, Union, NamedTuple
 
 

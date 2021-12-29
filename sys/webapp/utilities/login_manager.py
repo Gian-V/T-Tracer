@@ -1,5 +1,6 @@
-from typing import Union
 from flask_login import UserMixin
+
+from typing import Union
 
 
 class User(UserMixin):

@@ -10,8 +10,8 @@
 
     <div class="container">
         {% for message in get_flashed_messages() %}
-            {% if message['status'] == 'OK' %}
-                <div class="flash"><p class="alert alert-success" style="text-align: center;">{{ message['message'] }}</p></div>
+            {% if message.endswith('correctly registered') %}
+                <div class="flash"><p class="alert alert-success" style="text-align: center;">{{ message }}</p></div>
             {% else %}
                 <div class="flash"><p class="alert alert-danger" style="text-align: center;">{{ message }}</p></div>
             {% endif %}
@@ -19,16 +19,12 @@
     </div>
 
     <div class="new_container">
-        <form method="post">
-
-            <label for="track_ID"><b>Track ID</b></label>
-            <input type="text" id="track_ID" name="track_ID" autocomplete="off" value="">
-
+        <form method="post" action="{{ url_for('auth.panel') }}">
             <label for="username"><b>username</b></label>
-            <input class="form-control" id="username" type="text" name="username" autocomplete="off">
+            <input class="form-control" type="text" name="username" autocomplete="off">
 
             <label for="password"><b>Password</b></label>
-            <input type="text" id="password" name="password" value="">
+            <input type="text" name="password" value="">
 
             <label for="perms"><b>Perms</b></label>
             <select name="perms" id="perms">
@@ -80,7 +76,7 @@
                                 <td>Utente</td>
                             {% endif %}
                             <td>
-                                <form method="post">
+                                <form method="post" action="{{ url_for('auth.panel') }}">
                                     <input type="hidden" name="deleteUser" value="">
                                     {% if d.perms is defined %}
                                         {% set perms = 1 %}
@@ -88,7 +84,12 @@
                                         {% set perms = -1 %}
                                     {% endif %}
                                     <input type="hidden" name="valueUser" value="{{ perms }}">
-                                    <button type="button" class="btn btn-danger shadow-none" data-bs-toggle="modal" data-bs-target="#deletePage{{ d.username }}">
+                                    {% if d.username == user.username %}
+                                        {% set value = 'disabled' %}
+                                    {% else %}
+                                        {% set value = '' %}
+                                    {% endif %}
+                                    <button type="button" {{ value }} class="btn btn-danger shadow-none" data-bs-toggle="modal" data-bs-target="#deletePage{{ d.username }}">
                                         Delete
                                     </button>
                                     <div class="modal fade" id="deletePage{{ d.username }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
@@ -117,9 +118,13 @@
                             </td>
                             <td>
                                 {% if d.perms is not defined %}
-                                    <button type="button" class="btn btn-danger shadow-none" data-bs-toggle="modal" data-bs-target="#viewShipments{{ d.username }}">
-                                        View
-                                    </button>
+                                    {% if shipments['username'] is not none and d.username == shipments['username'] %}
+                                        <button type="button" class="btn btn-primary shadow-none" data-bs-toggle="modal" data-bs-target="#viewShipments{{ d.username }}">
+                                            View
+                                        </button>
+                                    {% else %}
+                                        <a class="btn btn-primary" href="{{ url_for('auth.panel', username=d.username) }}" role="button">View</a>
+                                    {% endif %}
                                     <div class="modal fade" id="viewShipments{{ d.username }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -128,7 +133,29 @@
                                                     <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    All the shipments
+                                                    {% if shipments['username'] == d.username %}
+                                                        <table class="table table-hover" id="shipments_list">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">id</th>
+                                                            <th scope="col">Username</th>
+                                                            <th scope="col">Perms</th>
+                                                            <th scope="col">Actions</th>
+                                                            <th scope="col">View</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for i in shipments['list'] %}
+                                                                <tr>
+                                                                    <th scope="row">{{ i.x }}</th>
+                                                                    <td>{{ i.y }}</td>
+                                                                    <td>{{ i.z }}</td>
+                                                                    <td>{{ i.d }}</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                        </table>
+                                                    {% endif %}
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary shadow-none" data-bs-dismiss="modal">
@@ -139,7 +166,9 @@
                                         </div>
                                     </div>
                                 {% else %}
-                                    No
+                                    <button type="button" disabled class="btn btn-primary shadow-none">
+                                        View
+                                    </button>
                                 {% endif %}
                             </td>
                         </tr>
@@ -149,4 +178,15 @@
             </div>
         </div>
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script type="text/javascript" defer>
+        window.onload = () => {
+            if(document.getElementById('shipments_list') !== null) {
+                $('#collapse_users').collapse('show');
+                $(`#viewShipments${"{{ shipments["username"] }}"}`).modal('show');
+            }
+        }
+    </script>
 {% endblock %}

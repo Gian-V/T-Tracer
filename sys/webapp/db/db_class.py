@@ -1,6 +1,9 @@
+from flask import Flask
+
 import logging
 import sys
 import mariadb
+
 from typing import Optional
 
 
@@ -10,14 +13,14 @@ class SQLOperation:
         self.db: Optional[mariadb.connection] = None
         self.cursor: Optional[mariadb.connection.cursor] = None
 
-    def init_app(self, user: str, password: str, host: str, port: int, database: str):
+    def init_app(self, app: Flask):
         try:
             self.db = mariadb.connect(
-                user=user,
-                password=password,
-                host=host,
-                port=port,
-                database=database
+                user=app.config['DATABASE_USER'],
+                password=app.config['DATABASE_PASSWORD'],
+                host=app.config['DATABASE_HOST'],
+                port=app.config['DATABASE_PORT'],
+                database=app.config["DATABASE_NAME"]
             )
         except mariadb.Error as e:
             logging.warning(e)

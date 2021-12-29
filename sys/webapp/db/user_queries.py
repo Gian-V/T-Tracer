@@ -1,8 +1,10 @@
 from enum import Enum
-from webapp.utilities.decorators import get_db
 import mariadb
-from webapp.utilities.user_perms import UserPerms
 from werkzeug.security import check_password_hash, generate_password_hash
+
+from webapp.utilities.decorators import get_db
+from webapp.utilities.user_perms import UserPerms
+
 from typing import Tuple, List, Union, NamedTuple
 
 
