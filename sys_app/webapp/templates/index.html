@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ url_for('static', filename="css/index.css") }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename="lib/pikaday/pikaday.css") }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container" style="display: block; margin: 4% auto;">
+        <div class="row ">
+            <div class="col-lg-7 mx-auto">
+                <div class="card mt-2 mx-auto p-4 bg-light">
+                    <div class=" text-center mt-2">
+                        <h1>Request form</h1>
+                    </div>
+                    <div class="card-body bg-light">
+                        <div class="container">
+                            <form id="method-request" method="POST">
+                                <div class="controls">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group autocomplete"><label for="form_start">PARTENZA</label><input id="form_start" type="text" name="form_start" class="form-control shadow-none where" style="text-transform:uppercase"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group autocomplete"><label for="form_end">ARRIVO</label><input id="form_end" type="text" name="form_end" class="form-control shadow-none where" style="text-transform:uppercase"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group"><label for="date_start">DATA PARTENZA</label><input id="date_start" type="text" name="date_start" class="form-control shadow-none date"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group"><label for="date_end">DATA ARRIVO</label><input id="date_end" type="text" name="date_end" class="form-control shadow-none date"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group"><label for="plate">TARGA</label><input id="plate" type="text" name="plate" class="form-control shadow-none" style="text-transform:uppercase;"></div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group"><label for="goods_weight">PESO (KG)</label><input id="goods_weight" type="number" name="goods_weight" class="form-control shadow-none"></div>
+                                        </div>
+                                        <div class="col-md-6"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="textarea">TIPO DI MERCE</label>
+                                                <textarea id="textarea" name="textarea" class="form-control shadow-none" rows="4" style="height: 70px;"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-success btn-send pt-2 btn-block" style="width: 100%;">Submit</button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        {% for message in get_flashed_messages() %}
+                                            {% if message.startswith('Some') %}
+                                                <div class="flash"><p class="alert alert-danger" style="text-align: center">{{ message }}</p></div>
+                                            {% else %}
+                                                <div class="flash"><p class="alert alert-success" style="text-align: center">{{ message }}</p></div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename="js/index/autocomplete.js") }}" defer></script>
+
+    <script src="{{ url_for('static', filename="js/index/datasetGetter.js") }}" defer></script>
+
+    <script src="{{ url_for('static', filename="lib/pikaday/pikaday.js") }}"></script>
+
+    <script src="{{ url_for('static', filename="js/index/datePicker.js") }}"></script>
+
+    <script src="{{ url_for('static', filename="js/index/preventds.js") }}"></script>
+{% endblock %}
