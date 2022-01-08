@@ -1,0 +1,6 @@
+/.idea
+/venv
+__pycache__/
+instance/
+webapp/database.env
+webapp/private_key.pem

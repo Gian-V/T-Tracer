@@ -1,0 +1,5 @@
+fastapi==0.70.1
+cryptography==36.0.1
+mariadb==1.0.9
+python-dotenv==0.19.2
+uvicorn==0.16.0
