@@ -49,13 +49,14 @@ def index():
                 goods_weight
             )
             msg = Message(
-                f"{current_user.mail} has just sent a request for our service, check it out.",
+                f"{current_user.mail} ha appena inviato una richiesta per il nostro servizio. Guardala il prima "
+                "possibile.",
                 recipients=[]
             )
             msg.add_recipient(msg.sender)
             mail.send(msg)
-            flash("Request sent correctly")
+            flash("Richiesta inviata correttamente.")
         else:
-            flash("Some fields are missing or you reached the max request per month")
+            flash("Non è stato inserito qualche campo oppure hai superato il limite di richieste per mese.")
 
     return render_template('index.html', title="Index")

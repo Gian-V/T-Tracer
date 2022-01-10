@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from webapp.routers import gps
-from webapp.utilities.variables import db, private_key
+from webapp.utilities import db, private_key
 
 app = FastAPI()
 
@@ -18,3 +18,4 @@ def on_shutdown():
 
 
 app.include_router(gps.router)
+

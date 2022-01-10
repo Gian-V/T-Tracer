@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="mb-3">
                                         {% for message in get_flashed_messages() %}
-                                            {% if message.startswith('Some') %}
+                                            {% if message.startswith('Non è') %}
                                                 <div class="flash"><p class="alert alert-danger" style="text-align: center">{{ message }}</p></div>
                                             {% else %}
                                                 <div class="flash"><p class="alert alert-success" style="text-align: center">{{ message }}</p></div>

@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, render_template, request, abort
+    Blueprint, render_template, abort
 )
 from jinja2 import Template
 
@@ -17,7 +17,13 @@ bp = Blueprint('path', __name__)
 @bp.route('/path-home')
 @perms_required('auth.login', to_check=UserPerms.POLICE)
 def path_home():
-    return """
+    template = Template("""
+    <script>
+        var node = document.createElement("title");
+        var textnode = document.createTextNode("Path Home");
+        node.appendChild(textnode);
+        document.querySelector("head").appendChild(node);
+    </script>
     <style>
         .container {
             top: 50%;
@@ -28,9 +34,11 @@ def path_home():
         }
     </style>
     <div class="container">
-        <h1>You are logged as Police</h1>
+        <h1>Hai fatto l'accesso come poliziotto</h1>
     </div>
-    """
+    """)
+
+    return template.render(title="Path Home")
 
 
 @bp.route('/path-<look_id>', methods=('GET', 'POST'))
@@ -41,6 +49,7 @@ def path(look_id: str):
 
     return render_template(
         'path.html',
+        title="Path",
         shipments_list=get_shipments_by_plate(look_id.upper()),
         current_date=datetime.date.today()
     )
@@ -49,17 +58,21 @@ def path(look_id: str):
 @bp.route('/gps_log/<int:_id>')
 @perms_required('auth.login', to_check=UserPerms.POLICE)
 def gps_getter(_id: int):
-    if not isinstance(_id, int):
-        abort(404)
 
     gps_log = get_gps_log_by_id(_id)
+    if gps_log is None:
+        abort(404)
 
     template = Template("""
-    {% if gps_log is not none %}
-        {% for i in gps_log.split("-")[:-1] %}
-            {{ i }}<br>
-        {% endfor %}
-    {% endif %}
+    <script>
+        var node = document.createElement("title");
+        var textnode = document.createTextNode("GPS");
+        node.appendChild(textnode);
+        document.querySelector("head").appendChild(node);
+    </script>
+    {% for i in gps_log.split("-")[:-1] %}
+        <p>{{ i }}</p>
+    {% endfor %}
     """)
 
-    return template.render(gps_log=gps_log)
+    return template.render(title="GPS", gps_log=gps_log)

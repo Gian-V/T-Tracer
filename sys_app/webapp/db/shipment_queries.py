@@ -28,8 +28,10 @@ def get_shipments_of_user(cursor: mariadb.connection.cursor, mail: str) -> List[
 
 @get_db
 def get_gps_log_by_id(cursor: mariadb.connection.cursor, shipment_id: int) -> Union[None, str]:
-    cursor.execute(ShipmentQuery.SELECT_ALL_SHIPMENTS_BY_PLATE.format(shipment_id))
+    cursor.execute(ShipmentQuery.GET_GPS_LOG_BY_ID.format(shipment_id))
     gps_log = cursor.fetchone()
+    if not gps_log:
+        return None
     return gps_log.GPS_log
 
 

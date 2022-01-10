@@ -47,7 +47,7 @@ def login():
             elif account[1].perms == UserPerms.ADMIN:
                 return redirect(url_for('auth.panel'))
 
-        flash("Invalid credentials")
+        flash("Credenziali non valide")
 
     return render_template('auth/login.html', title="Login page")
 
@@ -72,9 +72,9 @@ def panel():
                 and verify_form(user_mail, password)
                 and create_account(user_mail, password, perms)
             ):
-                flash(f"{user_mail} has been created")
+                flash(f"{user_mail} è stato creato.")
             else:
-                flash("Something went wrong")
+                flash("Qualcosa è andato storto.")
 
         elif request_type.get('deleteUser') is not None:
             user_mail = request_type.get('button')
@@ -90,8 +90,8 @@ def panel():
 
             if shipment_status == 0:
                 msg = Message(
-                    'Your shipment has been accepted! In case this is the first shipment with'
-                    'this truck Here it is your qrcode',
+                    'La tua richiesta di trucking è stata accettata! Nel caso questa fosse la prima spedizione con '
+                    'questo camion, appiccica il QRCode in modo che sia possibile scannerizzarlo',
                     attachments=[
                         Attachment(
                             "image.png",
@@ -119,4 +119,12 @@ def panel():
 @perms_required('auth.login', to_check=[None, UserPerms.ADMIN, UserPerms.POLICE])
 def logout():
     logout_user()
-    return "Logging out...", {"Refresh": "3; url=login"}
+    return """
+    <script>
+        var node = document.createElement("title");
+        var textnode = document.createTextNode("Logout page");
+        node.appendChild(textnode);
+        document.querySelector("head").appendChild(node);
+    </script>
+    Logging out...
+    """, {"Refresh": "3; url=login"}

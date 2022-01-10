@@ -10,7 +10,7 @@
 
     <div class="container">
         {% for message in get_flashed_messages() %}
-            {% if message.endswith('created') %}
+            {% if message.endswith('creato') %}
                 <div class="flash"><p class="alert alert-success" style="text-align: center;">{{ message }}</p></div>
             {% else %}
                 <div class="flash"><p class="alert alert-danger" style="text-align: center;">{{ message }}</p></div>
@@ -96,8 +96,7 @@
                                                     <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Are you sure you want to delete this account? This process cannot be
-                                                    undone.
+                                                    Sei sicurx di voler eliminare questo account? Questo processo non può essere fermato.
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary shadow-none" data-bs-dismiss="modal">
@@ -136,12 +135,12 @@
                                                             <thead>
                                                             <tr>
                                                                 <th scope="col">ID</th>
-                                                                <th scope="col">Date start</th>
-                                                                <th scope="col">Date end</th>
-                                                                <th scope="col">Location Start</th>
-                                                                <th scope="col">Location end</th>
-                                                                <th scope="col">Goods type</th>
-                                                                <th scope="col">Goods weight (Kg)</th>
+                                                                <th scope="col">Data inizio spedizione</th>
+                                                                <th scope="col">Date fine spodizione</th>
+                                                                <th scope="col">Partenza</th>
+                                                                <th scope="col">Arrivo</th>
+                                                                <th scope="col">Tipo di merce</th>
+                                                                <th scope="col">Peso (Kg)</th>
                                                                 <th scope="col">Status</th>
                                                             </tr>
                                                             </thead>
@@ -180,7 +179,7 @@
                                                                                                 <h5 class="modal-title" id="ModalLabel">Edit Shipment form</h5>
                                                                                                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                                             </div>
-                                                                                            <div class="modal-body">Are you sure you want to edit this shipment? This process cannot be undone.</div>
+                                                                                            <div class="modal-body">Sei sicurx di voler modificare questa spedizione? Questo processo non può essere fermato.</div>
                                                                                             <div class="modal-footer">
                                                                                                 <button type="button" class="btn btn-secondary shadow-none" data-bs-dismiss="modal">
                                                                                                     Close

@@ -24,7 +24,7 @@
             </div>
         </nav>
     </section>
-    <div class="container flex-column">
+    <div class="table-responsive">
         {% if shipments_list|length == 0 %}
             <h1>Non ci sono spedizioni con questa targa</h1>
         {% else %}
@@ -66,7 +66,7 @@
                                 {% endif %}
                             {% endif %}
                             <td>
-                                <a class="btn-primary" href="{{ url_for('path.gps_getter', _id=i.id) }}" role="button">GPS</a>
+                                <a class="btn btn-primary" href="{{ url_for('path.gps_getter', _id=i.id) }}" role="button">GPS</a>
                             </td>
                         </tr>
                     {% endfor %}

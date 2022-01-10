@@ -26,7 +26,7 @@ class Database:
         self.db.autocommit = True
 
     def cursor(self) -> mariadb.connection.cursor:
-        return self.db.cursor(named_tuple=True)
+        return self.db.cursor()
 
     def close(self):
         self.db.close()
