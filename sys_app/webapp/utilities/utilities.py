@@ -1,5 +1,19 @@
+from collections import namedtuple
 import io
 import qrcode
+
+from typing import List
+
+
+Marks = namedtuple('Marks', ['date', 'location'])
+
+
+def generate_geo_list(raw_str: str) -> List[Marks]:
+    return [
+        Marks(" ".join(obj[0].split("_")), (float(obj[1]), float(obj[2])))
+        for i in raw_str.split('|')[:-1]
+        if (obj := i.split(' ')) and True
+    ]
 
 
 def verify_form(*args, **kwargs) -> bool:

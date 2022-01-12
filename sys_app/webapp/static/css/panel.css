@@ -32,17 +32,6 @@ button:hover {
   }
 }
 
-.signupbtn {
-  width: 50%;
-  background-color: #04AA6D;
-  color: white;
-  padding: 14px 20px;
-  border: none;
-  cursor: pointer;
-  margin-right: 2px;
-  opacity: 0.9;
-}
-
 .container {
   margin-top: 10px;
   width: 25%;

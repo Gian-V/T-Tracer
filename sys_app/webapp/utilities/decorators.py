@@ -1,5 +1,5 @@
 from flask import (
-    redirect, url_for, session
+    redirect, url_for, session, request
 )
 from flask_login import current_user, AnonymousUserMixin
 
@@ -25,6 +25,22 @@ def get_db(view):
         finally:
             sqldb.close()
         return r
+    return wrapper
+
+
+def route_redirect(view):
+    @functools.wraps(view)
+    def wrapper(*args, **kwargs):
+        if isinstance(current_user, AnonymousUserMixin):
+            if not request.full_path.startswith('/auth/login'):
+                return redirect(url_for('auth.login'))
+            return view(*args, **kwargs)
+        if current_user.perms is None:
+            return redirect(url_for('user.user_request'))
+        if current_user.perms == 0:
+            return redirect(url_for('police.path_home'))
+        if current_user.perms == 1:
+            return redirect(url_for('admin.panel'))
     return wrapper
 
 

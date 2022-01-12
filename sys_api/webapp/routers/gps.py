@@ -22,7 +22,7 @@ def gps_request(
         if q is None:
             raise ValueError("You must insert a value")
         load_gps(cursor, private_key.decrypt(q.replace(b" ", b"+")))
-    except (ValueError, TypeError) as e:
+    except (ValueError, TypeError):
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return {'success': False}
     return {'success': True}

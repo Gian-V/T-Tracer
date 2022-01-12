@@ -5,11 +5,11 @@ import json
 
 from webapp.blueprints.auth import User
 from webapp.utilities.variables import mail, sqldb
-from webapp.blueprints import index, auth, path
+from webapp.blueprints import index, auth, police, user, admin
 from webapp.blueprints.errors import error_404
 from webapp.db.user_queries import get_user_by_mail
 
-blueprints = [index.bp, auth.bp, path.bp]
+blueprints = [index.bp, auth.bp, police.bp, user.bp, admin.bp]
 error_handler = [(404, error_404)]
 
 

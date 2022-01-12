@@ -10,7 +10,8 @@ from typing import List, Union, NamedTuple
 
 class ShipmentQuery(str, Enum):
     SELECT_ALL_SHIPMENTS_BY_MAIL = "SELECT * FROM shipments WHERE trucker_mail = '{}';"
-    SELECT_ALL_SHIPMENTS_BY_PLATE = "SELECT * FROM shipments WHERE license_plate = '{}';"
+    SELECT_ALL_SHIPMENTS_BY_PLATE = "SELECT * FROM shipments WHERE license_plate = '{}' AND STATUS = 1 ORDER BY " \
+                                    "end_date DESC;"
     GET_GPS_LOG_BY_ID = "SELECT GPS_log from shipments WHERE id = {};"
     EDIT_SHIPMENT = "UPDATE shipments SET status = {} WHERE id = {};"
     CREATE_SHIPMENT = "INSERT INTO " \

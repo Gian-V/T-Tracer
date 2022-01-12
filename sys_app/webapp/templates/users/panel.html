@@ -1,16 +1,25 @@
 {% extends "layout.html" %}
 {% block stylesheet %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth/panel.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
 {% endblock %}
 
 {% block content %}
-    <div style="background-color:#e5e5e5;padding:15px;text-align:center;">
-        <h1>Admin page</h1>
-    </div>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="{{ url_for('static', filename='img/favicon.png') }}" width="125" height="93.75" class="d-inline-block align-top">
+            </a>
+            <div class="d-flex">
+                <h1 class="text-center">
+                    Admin
+                </h1>
+            </div>
+        </div>
+    </nav>
 
     <div class="container">
         {% for message in get_flashed_messages() %}
-            {% if message.endswith('creato') %}
+            {% if message.endswith('creato.') %}
                 <div class="flash"><p class="alert alert-success" style="text-align: center;">{{ message }}</p></div>
             {% else %}
                 <div class="flash"><p class="alert alert-danger" style="text-align: center;">{{ message }}</p></div>
@@ -19,12 +28,12 @@
     </div>
 
     <div class="new_container">
-        <form method="post" action="{{ url_for('auth.panel') }}">
-            <label for="mail"><b>mail</b></label>
+        <form method="post" action="{{ url_for('admin.panel') }}">
+            <label for="mail"><b>Mail</b></label>
             <input class="form-control" type="text" name="mail" autocomplete="off">
 
             <label for="password"><b>Password</b></label>
-            <input type="text" name="password" value="">
+            <input class="form-control" type="text" name="password" value="">
 
             <label for="perms"><b>Perms</b></label>
             <select name="perms" id="perms">
@@ -33,8 +42,8 @@
                 <option value="USER">User</option>
             </select>
 
-            <div class="">
-                <button type="submit" class="btn btn-success signupbtn" name="register-user">Register</button>
+            <div class="d-grid gap-2 mx-auto" style="padding-top: 8px;">
+                <button class="btn btn-success" type="submit" name="register-user">Register</button>
             </div>
         </form>
     </div>
@@ -47,7 +56,8 @@
         </p>
         <div class="collapse" id="collapse_users">
             <div class="card card-body">
-                <table class="table table-hover">
+                <div class="table-responsive">
+                    <table class="table table-hover">
                     <thead>
                     <tr>
                         <th scope="col">ID</th>
@@ -72,7 +82,7 @@
                                 <td>Utente</td>
                             {% endif %}
                             <td>
-                                <form method="post" action="{{ url_for('auth.panel') }}">
+                                <form method="post" action="{{ url_for('admin.panel') }}">
                                     <input type="hidden" name="deleteUser" value="">
                                     {% if d.perms is defined %}
                                         {% set user_perms = 1 %}
@@ -103,7 +113,7 @@
                                                         Close
                                                     </button>
                                                     <button type="submit" name="button" value="{{ d.mail }}" class="btn btn-danger shadow-none">
-                                                        Delete confirmation
+                                                        Confirm
                                                     </button>
                                                 </div>
                                             </div>
@@ -118,7 +128,7 @@
                                             View
                                         </button>
                                     {% else %}
-                                        <a class="btn btn-primary" href="{{ url_for('auth.panel', mail=d.mail) }}" role="button">View</a>
+                                        <a class="btn btn-primary" href="{{ url_for('admin.panel', mail=d.mail) }}" role="button">View</a>
                                     {% endif %}
                                     <div class="modal fade" id="viewShipments{{ d.mail|replace("@", "--")|replace(".", "-") }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-xl">
@@ -131,72 +141,74 @@
                                                     {% if shipments['mail'] == d.mail %}
                                                         <input id="shipments_list" type="hidden">
                                                         {% if shipments['list']|length %}
-                                                            <table class="table table-hover">
-                                                            <thead>
-                                                            <tr>
-                                                                <th scope="col">ID</th>
-                                                                <th scope="col">Data inizio spedizione</th>
-                                                                <th scope="col">Date fine spodizione</th>
-                                                                <th scope="col">Partenza</th>
-                                                                <th scope="col">Arrivo</th>
-                                                                <th scope="col">Tipo di merce</th>
-                                                                <th scope="col">Peso (Kg)</th>
-                                                                <th scope="col">Status</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                {% for i in shipments['list'] %}
-                                                                    <tr>
-                                                                        <th scope="row">{{ i.id }}</th>
-                                                                        <td>{{ i.start_date.strftime('%d/%m/%Y') }}</td>
-                                                                        <td>{{ i.end_date.strftime('%d/%m/%Y') }}</td>
-                                                                        <td>{{ i.start_location }}</td>
-                                                                        <td>{{ i.end_location }}</td>
-                                                                        <td>{{ i.goods_type }}</td>
-                                                                        <td>{{ i.goods_weight }}</td>
-                                                                        <td>
-                                                                            <form method="POST" action="{{ url_for('auth.panel') }}">
-                                                                                <input name="editShipment" type="hidden" value="">
-                                                                                <input name="shipmentStatus" type="hidden" value="{{ i.status }}">
-                                                                                {% if i.status  == 0 %}
-                                                                                    {% set b2_text, b2_value = 'Attiva', '' %}
-                                                                                {% else %}
-                                                                                    {% if i.start_date <= current_date <= i.end_date %}
-                                                                                        {% set b2_text, b2_value = 'In corso', 'disabled' %}
-                                                                                    {% elif  current_date < i.start_date %}
-                                                                                            {% set b2_text, b2_value = 'Non ancora iniziata', 'disabled' %}
+                                                            <div class="table-responsive">
+                                                                <table class="table table-hover">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th scope="col">ID</th>
+                                                                    <th scope="col">Data inizio spedizione</th>
+                                                                    <th scope="col">Date fine spodizione</th>
+                                                                    <th scope="col">Partenza</th>
+                                                                    <th scope="col">Arrivo</th>
+                                                                    <th scope="col">Tipo di merce</th>
+                                                                    <th scope="col">Peso (Kg)</th>
+                                                                    <th scope="col">Status</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% for i in shipments['list'] %}
+                                                                        <tr>
+                                                                            <th scope="row">{{ i.id }}</th>
+                                                                            <td>{{ i.start_date.strftime('%d/%m/%Y') }}</td>
+                                                                            <td>{{ i.end_date.strftime('%d/%m/%Y') }}</td>
+                                                                            <td>{{ i.start_location }}</td>
+                                                                            <td>{{ i.end_location }}</td>
+                                                                            <td>{{ i.goods_type }}</td>
+                                                                            <td>{{ i.goods_weight }}</td>
+                                                                            <td>
+                                                                                <form method="POST" action="{{ url_for('admin.panel') }}">
+                                                                                    <input name="editShipment" type="hidden" value="">
+                                                                                    <input name="shipmentStatus" type="hidden" value="{{ i.status }}">
+                                                                                    {% if i.status  == 0 %}
+                                                                                        {% set b2_text, b2_value = 'Attiva', '' %}
                                                                                     {% else %}
-                                                                                        {% set b2_text, b2_value = 'Finita', 'disabled' %}
+                                                                                        {% if i.start_date <= current_date <= i.end_date %}
+                                                                                            {% set b2_text, b2_value = 'In corso', 'disabled' %}
+                                                                                        {% elif  current_date < i.start_date %}
+                                                                                                {% set b2_text, b2_value = 'Non ancora iniziata', 'disabled' %}
+                                                                                        {% else %}
+                                                                                            {% set b2_text, b2_value = 'Finita', 'disabled' %}
+                                                                                        {% endif %}
                                                                                     {% endif %}
-                                                                                {% endif %}
-                                                                                <button type="button" {{ b2_value }} class="btn btn-danger shadow-none" data-bs-toggle="modal" data-bs-target="#editShipment{{ i.id }}">
-                                                                                    {{ b2_text }}
-                                                                                </button>
-                                                                                <div class="modal fade" id="editShipment{{ i.id }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-                                                                                    <div class="modal-dialog">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="modal-header">
-                                                                                                <h5 class="modal-title" id="ModalLabel">Edit Shipment form</h5>
-                                                                                                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                                            </div>
-                                                                                            <div class="modal-body">Sei sicurx di voler modificare questa spedizione? Questo processo non può essere fermato.</div>
-                                                                                            <div class="modal-footer">
-                                                                                                <button type="button" class="btn btn-secondary shadow-none" data-bs-dismiss="modal">
-                                                                                                    Close
-                                                                                                </button>
-                                                                                                <button type="submit" name="button" value="{{ i.id }} {{ d.mail }} {{ i.license_plate }}" class="btn btn-danger shadow-none">
-                                                                                                    Edit Confirmation
-                                                                                                </button>
+                                                                                    <button type="button" {{ b2_value }} class="btn btn-danger shadow-none" data-bs-toggle="modal" data-bs-target="#editShipment{{ i.id }}">
+                                                                                        {{ b2_text }}
+                                                                                    </button>
+                                                                                    <div class="modal fade" id="editShipment{{ i.id }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                                                                                        <div class="modal-dialog">
+                                                                                            <div class="modal-content">
+                                                                                                <div class="modal-header">
+                                                                                                    <h5 class="modal-title" id="ModalLabel">Edit Shipment form</h5>
+                                                                                                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                </div>
+                                                                                                <div class="modal-body">Sei sicurx di voler modificare questa spedizione? Questo processo non può essere fermato.</div>
+                                                                                                <div class="modal-footer">
+                                                                                                    <button type="button" class="btn btn-secondary shadow-none" data-bs-dismiss="modal">
+                                                                                                        Close
+                                                                                                    </button>
+                                                                                                    <button type="submit" name="button" value="{{ i.id }} {{ d.mail }} {{ i.license_plate }}" class="btn btn-danger shadow-none">
+                                                                                                        Confirm
+                                                                                                    </button>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </form>
-                                                                        </td>
-                                                                    </tr>
-                                                                {% endfor %}
-                                                            </tbody>
-                                                            </table>
+                                                                                </form>
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                </tbody>
+                                                                </table>
+                                                            </div>
                                                         {% else %}
                                                             Questa persona non ha ancora spedito nulla
                                                         {% endif %}
@@ -219,7 +231,8 @@
                         </tr>
                     {% endfor %}
                     </tbody>
-                </table>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

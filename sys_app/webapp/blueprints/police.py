@@ -3,26 +3,33 @@ from flask import (
 )
 from jinja2 import Template
 
+import folium
 import re
 import datetime
 
 from webapp.utilities import UserPerms
 from webapp.utilities.decorators import police_required, perms_required
 from webapp.db.shipment_queries import get_shipments_by_plate, get_gps_log_by_id
+from webapp.utilities.utilities import generate_geo_list
 from webapp.utilities.variables import PLATE_REGEX
 
-bp = Blueprint('path', __name__)
+bp = Blueprint('police', __name__)
 
 
 @bp.route('/path-home')
 @perms_required('auth.login', to_check=UserPerms.POLICE)
 def path_home():
-    template = Template("""
+    return """
     <script>
-        var node = document.createElement("title");
-        var textnode = document.createTextNode("Path Home");
+        let node = document.createElement("title");
+        let textnode = document.createTextNode("Path Home");
         node.appendChild(textnode);
         document.querySelector("head").appendChild(node);
+        let node2 = document.createElement("link");
+        node2.setAttribute("rel", "icon");
+        node2.setAttribute("type", "image/x-icon");
+        node2.setAttribute("href", "static/img/favicon.png");
+        document.querySelector("head").appendChild(node2);
     </script>
     <style>
         .container {
@@ -36,9 +43,7 @@ def path_home():
     <div class="container">
         <h1>Hai fatto l'accesso come poliziotto</h1>
     </div>
-    """)
-
-    return template.render(title="Path Home")
+    """
 
 
 @bp.route('/path-<look_id>', methods=('GET', 'POST'))
@@ -48,7 +53,7 @@ def path(look_id: str):
         abort(404)
 
     return render_template(
-        'path.html',
+        'users/path.html',
         title="Path",
         shipments_list=get_shipments_by_plate(look_id.upper()),
         current_date=datetime.date.today()
@@ -59,20 +64,26 @@ def path(look_id: str):
 @perms_required('auth.login', to_check=UserPerms.POLICE)
 def gps_getter(_id: int):
 
-    gps_log = get_gps_log_by_id(_id)
-    if gps_log is None:
+    if (gps_log := get_gps_log_by_id(_id)) is None or not gps_log:
         abort(404)
 
-    template = Template("""
+    marks_list = generate_geo_list(gps_log)
+
+    geo_map = folium.Map(location=[*marks_list[0].location], zoom_start=15)
+
+    for i in marks_list:
+        folium.Marker(*[i.location], popup=f'Ore {i.date}').add_to(geo_map)
+
+    folium.PolyLine(locations=[i.location for i in marks_list], line_opacity=0.5).add_to(geo_map)
+
+    template = Template(f"""
     <script>
-        var node = document.createElement("title");
-        var textnode = document.createTextNode("GPS");
+        let node = document.createElement("title");
+        let textnode = document.createTextNode("GPS");
         node.appendChild(textnode);
         document.querySelector("head").appendChild(node);
     </script>
-    {% for i in gps_log.split("-")[:-1] %}
-        <p>{{ i }}</p>
-    {% endfor %}
+    {geo_map._repr_html_()}
     """)
 
-    return template.render(title="GPS", gps_log=gps_log)
+    return template.render()

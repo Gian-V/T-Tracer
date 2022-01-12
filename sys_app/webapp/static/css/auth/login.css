@@ -2,67 +2,96 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background: #272B33;
+  background-image: url(../../img/login.png);
 }
 
-.card {
-  margin-bottom: 20px;
-  border: none
-}
-
-.box {
-  width: 500px;
-  padding: 40px;
-  position: absolute;
+.container {
   top: 50%;
   left: 50%;
-  background: #191919;
-  text-align: center;
-  transition: 0.25s;
-  margin-top: 100px
+  transform: translate(-50%, -50%);
+  margin: auto;
+  width: 50%;
+  height: 70%;
+  position: fixed;
 }
 
-.box input[type="text"],
-.box input[type="password"] {
-  background: none;
-  display: block;
-  margin: 20px auto;
-  text-align: center;
-  border: 2px solid #3498db;
-  padding: 10px 10px;
-  width: 250px;
-  outline: none;
-  color: white;
-  border-radius: 24px;
-  transition: 0.25s
+h2 {
+	text-transform: uppercase;
+	color: white;
+	font-weight: 400;
+	letter-spacing: 1px;
+	font-size: 1.4em;
+	line-height: 2.8em;
 }
 
-.box h1 {
-  color: white;
-  text-transform: uppercase;
-  font-weight: 500
+.login-box {
+	background-color: white;
+	max-width: 340px;
+	margin: 0 auto;
+	position: relative;
+	top: 80px;
+	padding-bottom: 5px;
+	border-radius: 5px;
+	box-shadow: 0 5px 50px rgba(0,0,0,0.4);
+	text-align: center;
 }
 
-.box input[type="text"]:focus,
-.box input[type="password"]:focus {
-  width: 300px;
-  border-color: #2ecc71
+.login-box .box-header {
+	background-color: #665851;
+	margin-top: 0;
+	border-radius: 5px 5px 0 0;
 }
 
-.box button {
-  background: none;
-  display: block;
-  margin: 20px auto;
-  text-align: center;
-  border: 2px solid #2ecc71;
-  padding: 14px 40px;
-  outline: none;
-  color: white;
-  border-radius: 24px;
-  transition: 0.25s;
-  cursor: pointer
+.login-box label {
+	font-weight: 700;
+	font-size: .8em;
+	color: #888;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	line-height: 2em;
 }
 
-.box button:hover {
-  background: #2ecc71
+.login-box input {
+	margin-bottom: 20px;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	font-size: .9em;
+	color: #888;
+}
+
+.login-box input:focus {
+	outline: none;
+	border-color: #665851;
+	transition: 0.5s;
+	color: #665851;
+}
+
+.login-box button {
+	margin-top: 0;
+	border: 0;
+	border-radius: 2px;
+	color: white;
+	padding: 10px;
+	text-transform: uppercase;
+	font-weight: 400;
+	font-size: 0.7em;
+	letter-spacing: 1px;
+	background-color: #665851;
+	cursor:pointer;
+	outline: none;
+}
+
+.login-box button:hover {
+	opacity: 0.7;
+	transition: 0.5s;
+}
+
+.login-box button:hover {
+	opacity: 0.7;
+	transition: 0.5s;
+}
+
+.login-box input {
+	text-align: center
 }
