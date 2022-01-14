@@ -21,9 +21,11 @@ class Database:
 
             )
         except mariadb.Error as e:
-            print(f"Error connecting to MariaDB Platform: {e}")
+            logging.warning(e)
             sys.exit(1)
+
         self.db.autocommit = True
+        self.db.auto_reconnect = True
 
     def cursor(self) -> mariadb.connection.cursor:
         return self.db.cursor()
