@@ -1,5 +1,5 @@
-import mariadb
 import sys
+import mariadb
 
 from .config import settings
 
