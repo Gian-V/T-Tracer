@@ -27,6 +27,7 @@ class SQLOperation:
             sys.exit(1)
 
         self.db.autocommit = True
+        self.db.auto_reconnect = True
 
     def connect(self) -> None:
         if self.cursor is None:
