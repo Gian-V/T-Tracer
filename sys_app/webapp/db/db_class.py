@@ -1,8 +1,8 @@
 from flask import Flask
 
 import logging
-import sys
 import mariadb
+import sys
 
 from typing import Optional
 
